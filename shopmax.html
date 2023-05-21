@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="shopmax.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Jost:wght@700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Shop Max | Ecommerce Website</title>
+</head>
+<body>
+    <div id="sign-up-form">
+        <div id="close-login">X</div>
+        <h2 id="sign-to-continue-text">Sign up To Continue</h2>
+        <form action="./customer_entry.php" method="post" id="form">
+            <input id="user_id" type="text" name="user_id" >
+
+            <label for="name">Full Name</label>
+            <input id="name" type="text" name="name" required>
+
+            <label for="username">Username</label>
+            <input id="username" type="text" name="username" required>
+
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password" required minlength="8" placeholder="minimum of 8 characters">
+
+            <label for="email">Email Address</label>
+            <input id="email" type="email" name="email" placeholder="example@gmail.com" required>
+
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="phone" name="phone" required>
+
+            <label for="address">Billing Address</label>
+            <input id="address" type="text" name="address" required>
+
+            <input id="submit" type="submit" value="Log In" name="save" required>
+        </form>
+        <div id="logout-confirmation">
+            <h1>Are you sure you want to sign out?</h1>
+            <div>
+                <button id="sign-out">Sign Out</button>
+                <button id="cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="cart-wrapper">
+        <div id="cart">
+            <div id="close-cart">X</div>
+            <div id="cart-details">
+                <form id="cart-form" action="sales_entry.php" method="post">
+                    <input id="purchase-id" type="text" name="purchase_id" style="display: none;" />
+                    <img id="cart-prod-img" src="https://www.shutterstock.com/image-vector/penalty-fine-pay-prohibited-legal-600w-2105572211.jpg" alt="">
+
+                    <input name="product_name" id="cart-prod-name" type="text" 
+                    style="font-size:1.4em;"
+                    value="lorem Ipsum" readonly>
+                    <hr />
+                    <p id="cart-prod-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, quis!</p>
+                    
+                    <div id="prod-qty">
+                        <input id="cart-prod-price" value="$100" readonly
+                        style="font-size: 1.5em;" 
+                        name="product_price" />
+                        <div>
+                            <label for="product_quantity">Qty:</label>
+                            <input id="product-quantity" type="number" 
+                            style="font-size: 1em;" name="product_quantity"
+                             />
+                        </div>
+                    </div>
+                    <input id="amount-paid" name="amount_paid" style="display: none;" />
+                    <hr />
+                    <h3>Billing Details</h3>
+
+                    <input id="customer-name" value="Lorem Ipsum" type="text" name="customer_name" style="font-family: 'Trebuchet MS', Arial, sans-serif;font-size: 1em;"      />
+
+                    <input id="customer-address" value="Lorem Ipsum, Yaba" type="text" name="billing_address"               style="font-family: 'Trebuchet MS', Arial, sans-serif;font-size: 1em;" />
+
+                    <input id="customer-email" value="LoremIpsum@gmail.com" type="text" 
+                    style="font-family: 'Trebuchet MS', Arial, sans-serif;font-size: 1em;"    name="email_address" />
+
+                    <input id="time" type="text" name="time" style="display: none;" />
+
+                    <input 
+                    id="pay" type="submit" name="buy" value="Confirm and Pay">
+                </form>
+            </div>
+        </div>
+    </div>
+    <main>
+        <nav id="main-navbar">
+            <a id="header-link" href="#">Shop Max</a>
+            <ul>
+                <li><a class="class-link" href="#shop">Store</a></li>
+                <li id="sign-in-link" ><span>Sign Up</span></li>
+            </ul>
+        </nav>
+        <section id="hero">
+            <h1>Get the best quality items at<br> <span>affordable prices</span>!</h1>
+        </section>
+        <section id="shop">
+            <section id="categories">
+                <h2>Categories</h2>
+                <ul>
+                    <li><hr></li>
+                    <li class="cat-items" id="clothes">Smartphones</li>
+                    <li><hr></li>
+                    <li class="cat-items"  id="gadgets"> Accessories</li>
+                    <li><hr></li>
+                    <li class="cat-items"  id="books">Wearables</li>
+                    <li><hr></li>
+                    <li class="cat-items" id="accessories">Smart Screens</li>
+                </ul>
+            </section>
+            <section id="store">
+                <h2>Our Products</h2>
+                <div id="product-grid">
+                </div>
+            </section>
+        </section>
+    </main>
+    <form action="sales.php">
+
+    </form>
+    <script src="script.js"></script>
+</body>
+</html>
