@@ -12,6 +12,11 @@ const continueText = document.querySelector('#sign-to-continue-text');
 const closeCartBtn = document.querySelector('#close-cart');
 const cartWrapper = document.querySelector('#cart-wrapper');
 const cartForm = document.querySelector('#cart-form');
+const smartphoneFltr = document.querySelector('#smartphones');
+const accessoriesFltr = document.querySelector('#accessories');
+const wearablesFltr = document.querySelector('#wearables');
+const smartScreensFltr = document.querySelector('#smartscreens');
+const noFltr = document.querySelector('#no-filter');
 
 function generatePurchaseId() {
     let str = "";
@@ -94,53 +99,102 @@ $.ajax({
         type:'GET',
         dataType:'json',
         success:function(data){
-            console.log(data)
             let renderedItems = data.map(prod => prod).sort(() => Math.random() - 0.5);
-            productGrid.innerHTML = renderedItems.map(item =>{
-                return `<div class="product">
-                <img class="prod-img" src="${item.prod_img}" alt="${item.prod_name}">
-                <p class="prod-name">${item.prod_name}</p>
-                <p class="prod-desc">${(item.prod_desc.length > 80)?(item.prod_desc.slice(0, 80) + "..."):item.prod_desc}</p>
-                <p class="prod-price">${item.prod_price}</p>
-                <button class="buy-now">
-                Buy Now</button>
-            </div>`
-        }).join(" ");
-
-        const buyNowBtn = document.getElementsByClassName("buy-now");
-        for(let i = 0; i<buyNowBtn.length; i++){
-            buyNowBtn[i].addEventListener('click', ()=>{
-                if(isSigned){
-                    cartWrapper.style.animation = "fade-slide-in 0.5s";
-                    cartWrapper.style.display = "flex";
-                    document.querySelector('#cart-prod-img').src = renderedItems[i].prod_img;
-                    document.querySelector('#cart-prod-name').value = renderedItems[i].prod_name;
-                    document.querySelector('#cart-prod-desc').textContent = renderedItems[i].prod_desc;
-                    document.querySelector('#cart-prod-price').value = renderedItems[i].prod_price;
-                    document.querySelector('#customer-name').value = sessionDetails.fullName;
-                    document.querySelector('#customer-address').value = sessionDetails.address;
-                    document.querySelector('#customer-email').value = sessionDetails.email;
-                    document.querySelector('#time').value = Date().slice(0, 25);
-                    const qty = document.querySelector('#product-quantity');
-                    qty.value = 1;
-                    document.querySelector('#amount-paid').value = qty.value * Number(data[i].prod_price.replace(/[^0-9]/g, ""));
-                    qty.addEventListener("change", function (event) {
-                        if (this.value < 1) this.value = 1;
-                        document.querySelector('#amount-paid').value = this.value * Number(data[i].prod_price.replace(/[^0-9]/g, ""));
+                productGrid.innerHTML = renderedItems.map(item =>{
+                    return `<div class="product">
+                    <img class="prod-img" src="${item.prod_img}" alt="${item.prod_name}">
+                    <p class="prod-name">${item.prod_name}</p>
+                    <p class="prod-desc">${(item.prod_desc.length > 80)?(item.prod_desc.slice(0, 80) + "..."):item.prod_desc}</p>
+                    <p class="prod-price">${item.prod_price}</p>
+                    <button class="buy-now">
+                    Buy Now</button>
+                </div>`
+                }).join(" ");
+                let buyNowBtn = document.getElementsByClassName("buy-now");
+            function addBuyEvent() {
+                for(let i = 0; i<buyNowBtn.length; i++){
+                    buyNowBtn[i].addEventListener('click', function buyNowCart(){
+                        if(isSigned){
+                            cartWrapper.style.animation = "fade-slide-in 0.5s";
+                            cartWrapper.style.display = "flex";
+                            document.querySelector('#cart-prod-img').src = renderedItems[i].prod_img;
+                            document.querySelector('#cart-prod-name').value = renderedItems[i].prod_name;
+                            document.querySelector('#cart-prod-desc').textContent = renderedItems[i].prod_desc;
+                            document.querySelector('#cart-prod-price').value = renderedItems[i].prod_price;
+                            document.querySelector('#customer-name').value = sessionDetails.fullName;
+                            document.querySelector('#customer-address').value = sessionDetails.address;
+                            document.querySelector('#customer-email').value = sessionDetails.email;
+                            document.querySelector('#time').value = Date().slice(0, 25);
+                            const qty = document.querySelector('#product-quantity');
+                            qty.value = 1;
+                            document.querySelector('#amount-paid').value = qty.value * Number(renderedItems[i].prod_price.replace(/[^0-9]/g, ""));
+                            qty.addEventListener("change", function (event) {
+                                if (this.value < 1) this.value = 1;
+                                document.querySelector('#amount-paid').value = this.value * Number(renderedItems[i].prod_price.replace(/[^0-9]/g, ""));
+                            })
+                            document.querySelector('#purchase-id').value = generatePurchaseId();
+                        }
+                        else{
+                            LoginBox.style.animation = "fade-in 0.5s";
+                            LoginBox.style.display = "flex";
+                            form.style.display = "flex";
+                            continueText.style.display = "unset";
+                            logOutBox.style.display = "none";
+                        }
                     })
-                    document.querySelector('#purchase-id').value = generatePurchaseId();
                 }
-                else{
-                    LoginBox.style.animation = "fade-in 0.5s";
-                    LoginBox.style.display = "flex";
-                    form.style.display = "flex";
-                    continueText.style.display = "unset";
-                    logOutBox.style.display = "none";
+            }
+            addBuyEvent();
+            function renderProducts() {
+                for(let i = 0; i<buyNowBtn.length; i++){
+                    buyNowBtn[i].removeEventListener('click', ()=>buyNowCart())
                 }
-            })
+                productGrid.innerHTML = renderedItems.map(item =>{
+                    return `<div class="product">
+                    <img class="prod-img" src="${item.prod_img}" alt="${item.prod_name}">
+                    <p class="prod-name">${item.prod_name}</p>
+                    <p class="prod-desc">${(item.prod_desc.length > 80)?(item.prod_desc.slice(0, 80) + "..."):item.prod_desc}</p>
+                    <p class="prod-price">${item.prod_price}</p>
+                    <button class="buy-now">
+                    Buy Now</button>
+                </div>`
+                }).join(" ");
+                buyNowBtn = document.getElementsByClassName("buy-now");
+                addBuyEvent();
+            }
+            smartphoneFltr.addEventListener('click', ()=>{
+                renderedItems = data.filter(item =>(item.prod_category == "smartphones"));
+                setTimeout(()=>renderProducts(), 400);
+                productGrid.style.animation = "flicker 0.8s";
+                setTimeout(()=>{productGrid.style.animation = "none"},900);
+            });
+            accessoriesFltr.addEventListener('click', ()=>{
+                renderedItems = data.filter(item =>(item.prod_category == "accessories"));
+                setTimeout(()=>renderProducts(), 400);
+                productGrid.style.animation = "flicker 0.8s";
+                setTimeout(()=>{productGrid.style.animation = "none"},900);
+            });
+            wearablesFltr.addEventListener('click', ()=>{
+                renderedItems = data.filter(item =>(item.prod_category == "wearables"));
+                setTimeout(()=>renderProducts(), 400);
+                productGrid.style.animation = "flicker 0.8s";
+                setTimeout(()=>{productGrid.style.animation = "none"},900);
+            });
+            smartScreensFltr.addEventListener('click', ()=>{
+                renderedItems = data.filter(item =>(item.prod_category == "smartscreens"));
+                setTimeout(()=>renderProducts(), 400);
+                productGrid.style.animation = "flicker 0.8s";
+                setTimeout(()=>{productGrid.style.animation = "none"},900);
+            });
+            noFltr.addEventListener('click', ()=>{
+                renderedItems = data.map(prod => prod).sort(() => Math.random() - 0.5);
+                setTimeout(()=>renderProducts(), 400);
+                productGrid.style.animation = "flicker 0.8s";
+                setTimeout(()=>{productGrid.style.animation = "none"},900);
+            });
         }
-    }
-})
+    })
+
 
 cartForm.addEventListener('submit', (event)=>{
     event.preventDefault;
