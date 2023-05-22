@@ -12,6 +12,8 @@ body{
     height: 50px;
     align-items: center;
     margin-inline:40px;
+    /* top: 0px;
+    z-index: 10; */
 }
 #main-navbar >ul >li{
     list-style-type: none;
